@@ -1,2 +1,1 @@
-# MapParser
-Map parser.
+# Map Parser
