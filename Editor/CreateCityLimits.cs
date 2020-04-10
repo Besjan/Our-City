@@ -20,25 +20,6 @@
         const float smoothSize = 10.0f;
 
 
-        [MenuItem("Cuku/City/Define City Limits")]
-        static void DefineCityLimits()
-        {
-            var terrainGroup = GameObject.FindObjectOfType<TerrainGroup>();
-            var platePosition = terrainGroup.transform.position;
-            var plateSize = Vector2.zero;
-
-            var cityLimitsModel = GameObject.FindObjectOfType<CityLimitsModel>();
-            //cityLimitsModel.Create(platePosition, plateSize, Cuku.Terrain.EditTerrain.GetBoundaryPoints());
-        }
-
-        [MenuItem("Cuku/City/Create Boundary")]
-        static void CreateBoundary()
-        {
-            var boundaryPoints = Features.GetBoundaryPoints().AddTileIntersectionPoints();
-
-            boundaryPoints.CreateWall("Boundary");
-        }
-
         [MenuItem("Cuku/City/Lower Outer Terrains")]
         static void LowerOuterTerrain()
         {
@@ -96,6 +77,14 @@
 
                 Debug.Log(terrain.name + ": " + DateTime.Now.Subtract(startTime).TotalMinutes);
             }
+        }
+
+        [MenuItem("Cuku/City/Create Boundary")]
+        static void CreateBoundary()
+        {
+            var boundaryPoints = Features.GetBoundaryPoints().AddTileIntersectionPoints();
+
+            boundaryPoints.CreateWall("Boundary");
         }
 
         static Dictionary<Terrain, Vector3[]> GetHitTerrainsAndBoundaryPoints(this Vector3[] boundaryPoints)
