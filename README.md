@@ -4,7 +4,8 @@
 
 
 ## Dependencies
-- [Terrain Generator](https://github.com/Besjan/Terrain-Generator)
+- [OSM Interpreter](https://github.com/Besjan/OSM-Interpreter)
+- [Utilities](https://github.com/Besjan/Utilities)
 - [High Definition RP](https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@9.0/manual/index.html)
     - Particle System Shader Samples
  
