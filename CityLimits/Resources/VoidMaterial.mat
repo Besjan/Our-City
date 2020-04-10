@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Void
-  m_Shader: {fileID: -6465566751694194690, guid: 8f86e89feb38bd445a4ac9b39d60781a, type: 3}
+  m_Name: VoidMaterial
+  m_Shader: {fileID: -6465566751694194690, guid: 100a9259326afd84dab7c53175620a92, type: 3}
   m_ShaderKeywords: _BLENDMODE_ALPHA _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
