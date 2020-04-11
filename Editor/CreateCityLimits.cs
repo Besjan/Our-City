@@ -17,7 +17,8 @@
         const int curveOffset = 2;
         const int curveSampleRate = 15;
 
-        const float smoothSize = 10.0f;
+        const float smoothDistance = 20.0f;
+        const float smoothFactor = 0.3f;
 
 
         [MenuItem("Cuku/City/Lower Outer Terrains")]
@@ -29,8 +30,6 @@
             var boundaryPoints2D = boundaryPoints.ProjectToXZPlane();
 
             var hitTerrains = boundaryPoints.GetHitTerrainsAndBoundaryPoints();
-
-            var smoothFactor = 1 / Mathf.Sqrt(smoothSize);
 
             for (int tc = 0; tc < hitTerrains.Count; tc++)
             {
@@ -58,13 +57,14 @@
                         var positionOnCurve = boundaryCurve.EvaluatePosition(boundaryCurve.Project(positionOnXZPlane).percent);
                         var distanceFromCurve = Vector3.Distance(positionOnXZPlane, positionOnCurve);
 
-                        if (distanceFromCurve > smoothSize)
+                        if (distanceFromCurve > smoothDistance)
                         {
                             heights[j, i] = 0;
                             continue;
                         }
 
-                        var smoothAmountMeter = Mathf.Pow(distanceFromCurve * smoothFactor, 2);
+                        var smoothAmountMeter = distanceFromCurve * smoothFactor;
+                        smoothAmountMeter *= smoothAmountMeter;
                         var smoothAmountPercent = (positionOnCurve.GetHitTerrainHeight() - smoothAmountMeter) / terrainSize.y;
 
                         heights[j, i] = smoothAmountPercent;
