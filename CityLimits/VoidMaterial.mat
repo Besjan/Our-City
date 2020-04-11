@@ -278,7 +278,7 @@ Material:
     m_Colors:
     - Color_BC4E7604: {r: 0.5294118, g: 0.80784315, b: 0.92156863, a: 1}
     - Vector2_3782A8B8: {r: 0, g: 1, b: 0, a: 0}
-    - Vector2_4F8D01F9: {r: 0, g: 20, b: 0, a: 0}
+    - Vector2_4F8D01F9: {r: 0, g: 3, b: 0, a: 0}
     - Vector2_D0C9AA28: {r: -6, g: 60.1, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
