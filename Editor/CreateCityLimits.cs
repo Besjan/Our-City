@@ -37,17 +37,17 @@
                 var terrain = keyPair.Key;
                 var boundaryCurve = keyPair.Value.GetCurve(curveSampleRate, true);
 
-                var terrainSize = terrain.terrainData.size;
-                var heightmapResolution = terrain.terrainData.heightmapResolution;
-                var terrainPosition = terrain.GetPosition();
-                var heights = terrain.terrainData.GetHeights(0, 0, heightmapResolution, heightmapResolution);
+                var position = terrain.GetPosition();
+                var size = terrain.terrainData.size;
+                var hmResolution = terrain.terrainData.heightmapResolution;
+                var heights = terrain.terrainData.GetHeights(0, 0, hmResolution, hmResolution);
 
-                for (int i = 0; i < heightmapResolution; i++)
+                for (int i = 0; i < hmResolution; i++)
                 {
-                    for (int j = 0; j < heightmapResolution; j++)
+                    for (int j = 0; j < hmResolution; j++)
                     {
-                        float posX = terrainSize.x * i / heightmapResolution + terrainPosition.x;
-                        float posZ = terrainSize.z * j / heightmapResolution + terrainPosition.z;
+                        float posX = size.x * i / (hmResolution - 1) + position.x;
+                        float posZ = size.z * j / (hmResolution - 1) + position.z;
 
                         var pointPosition2D = new Vector2(posX, posZ);
 
@@ -65,7 +65,7 @@
 
                         var smoothAmountMeter = distanceFromCurve * smoothFactor;
                         smoothAmountMeter *= smoothAmountMeter;
-                        var smoothAmountPercent = (positionOnCurve.GetHitTerrainHeight() - smoothAmountMeter) / terrainSize.y;
+                        var smoothAmountPercent = (positionOnCurve.GetHitTerrainHeight() - smoothAmountMeter) / size.y;
 
                         heights[j, i] = smoothAmountPercent;
                     }
