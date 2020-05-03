@@ -21,7 +21,7 @@
         const float smoothFactor = 0.3f;
 
 
-        [MenuItem("Cuku/City/Lower Outer Terrains")]
+        [MenuItem("Cuku/City/Limits/Lower Outer Terrains")]
         static void LowerOuterTerrain()
         {
             var startTime = DateTime.Now;
@@ -79,7 +79,19 @@
             }
         }
 
-        [MenuItem("Cuku/City/Create Boundary")]
+        [MenuItem("Cuku/City/Limits/Add Void")]
+        static void AddVoid()
+        {
+            var voidPlane = GameObject.CreatePrimitive(PrimitiveType.Quad).transform;
+            voidPlane.name = "Void";
+            voidPlane.position = Vector3.up * 24;
+            voidPlane.eulerAngles = Vector3.right * 90;
+            voidPlane.localScale = new Vector3(100000, 100000, 1);
+            voidPlane.GetComponent<MeshRenderer>().material = Resources.Load<Material>("CityLimits/VoidMaterial");
+            GameObject.DestroyImmediate(voidPlane.GetComponent<Collider>());
+        }
+
+        [MenuItem("Cuku/City/Limits/Create Boundary")]
         static void CreateBoundary()
         {
             var boundaryPoints = Features.GetBoundaryPoints().AddTileIntersectionPoints();

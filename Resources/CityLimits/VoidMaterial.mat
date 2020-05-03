@@ -8,12 +8,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: VoidMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 100a9259326afd84dab7c53175620a92, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 100a9259326afd84dab7c53175620a92,
+    type: 3}
   m_ShaderKeywords: _BLENDMODE_ALPHA _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: 2750
   stringTagMap:
     MotionVector: User
     RenderType: Transparent
@@ -278,7 +279,7 @@ Material:
     m_Colors:
     - Color_BC4E7604: {r: 0.5294118, g: 0.80784315, b: 0.92156863, a: 1}
     - Vector2_3782A8B8: {r: 0, g: 1, b: 0, a: 0}
-    - Vector2_4F8D01F9: {r: 0, g: 3, b: 0, a: 0}
+    - Vector2_4F8D01F9: {r: 0, g: 10, b: 0, a: 0}
     - Vector2_D0C9AA28: {r: -6, g: 60.1, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
