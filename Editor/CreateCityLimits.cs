@@ -14,7 +14,7 @@
     {
         const float boundaryHeight = 100.0f;
 
-        const int curveOffset = 2;
+        const int curveOffset = 20;
         const int curveSampleRate = 15;
 
         const float smoothDistance = 20.0f;
