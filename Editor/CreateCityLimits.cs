@@ -21,7 +21,7 @@
         const float smoothFactor = 0.3f;
 
 
-        [MenuItem("Cuku/City/Limits/Lower Outer Terrains")]
+        [MenuItem("Cuku/City/Limits/Lower Outer Terrain")]
         static void LowerOuterTerrain()
         {
             var startTime = DateTime.Now;
@@ -222,8 +222,7 @@
 
         static Vector3 GetTileIntersectionPoint(Vector3 point1, Vector3 point2)
         {
-            var terrain = point1.GetHitTerrain().transform.GetComponent<Terrain>();
-            var terrainAnglePoints = terrain.GetTerrainAnglePoints();
+            var terrainAnglePoints = point1.GetHitTerrain().GetTerrainAnglePoints();
 
             var A1 = new Vector2(point1.x, point1.z);
             var A2 = new Vector2(point2.x, point2.z);
