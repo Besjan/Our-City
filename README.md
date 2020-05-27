@@ -1,3 +1,5 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-greed.svg)](LICENSE)
+
 ## Features
 - Use terrain generated from LiDAR point cloud data.
 - Use OSM data to build city elements.
