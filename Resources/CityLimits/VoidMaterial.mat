@@ -8,21 +8,22 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: VoidMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 100a9259326afd84dab7c53175620a92,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 446c5c0b7e1fd244996b600eafe54162, type: 3}
   m_ShaderKeywords: _BLENDMODE_ALPHA _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2750
+  m_CustomRenderQueue: 3700
   stringTagMap:
     MotionVector: User
     RenderType: Transparent
   disabledShaderPasses:
   - DistortionVectors
-  - TransparentBackface
-  - MOTIONVECTORS
   - RayTracingPrepass
+  - MOTIONVECTORS
+  - TransparentDepthPrepass
+  - TransparentDepthPostpass
+  - TransparentBackface
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -31,7 +32,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_8FEEBB68:
-        m_Texture: {fileID: 2800000, guid: 3f86179103e53e0448274f65e465d0f3, type: 3}
+        m_Texture: {fileID: 2800000, guid: 32488ad004e29674eb2d2afe8ff5b10e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_929B7DC3:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_D1349F11:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
@@ -131,6 +140,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_4664B72E: 1
+    - Vector1_5553DC64: 5
+    - Vector1_A5F6650B: 0.5
+    - Vector1_CB02A382: 0.5
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ATDistance: 1
@@ -142,7 +155,7 @@ Material:
     - _AlphaCutoffPrepass: 0.5
     - _AlphaCutoffShadow: 0.5
     - _AlphaDstBlend: 10
-    - _AlphaSrcBlend: 1
+    - _AlphaSrcBlend: 0
     - _AlphaToMask: 0
     - _Anisotropy: 0
     - _BlendMode: 0
@@ -229,7 +242,7 @@ Material:
     - _ReceivesSSR: 0
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
-    - _RenderQueueType: 4
+    - _RenderQueueType: 7
     - _RequireSplitLighting: 0
     - _SSRefractionProjectionModel: 0
     - _Smoothness: 0.5
@@ -277,14 +290,16 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 0
     m_Colors:
+    - Color_404EB11F: {r: 0.6784314, g: 0.6627451, b: 0.54509807, a: 1}
     - Color_BC4E7604: {r: 0.5294118, g: 0.80784315, b: 0.92156863, a: 1}
     - Vector2_3782A8B8: {r: 0, g: 1, b: 0, a: 0}
     - Vector2_4F8D01F9: {r: 0, g: 10, b: 0, a: 0}
+    - Vector2_68AEF8B5: {r: 1, g: 2, b: 0, a: 0}
     - Vector2_D0C9AA28: {r: -6, g: 60.1, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
