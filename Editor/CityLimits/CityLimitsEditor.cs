@@ -9,97 +9,115 @@
     using Utilities;
 	using UnityEngine.ProBuilder;
 	using UnityEditor.ProBuilder;
+	using Sirenix.OdinInspector.Editor;
+	using Sirenix.Utilities.Editor;
+	using Sirenix.Utilities;
+	using UnityEngine.UI;
+	using Sirenix.OdinInspector;
 
-	public static class CreateCityLimits
+	public class CityLimitsEditor : OdinEditorWindow
     {
-        const float boundaryHeight = 100.0f;
-
-        const int curveOffset = 20;
-        const int curveSampleRate = 15;
-
-        const float smoothDistance = 20.0f;
-        const float smoothFactor = 0.3f;
-
-
-        [MenuItem("Cuku/City/Limits/Lower Outer Terrain")]
-        static void LowerOuterTerrain()
+        [MenuItem("Cuku/Our City/City Limits")]
+        private static void OpenWindow()
         {
-            var startTime = DateTime.Now;
-
-            var boundaryPoints = Features.GetBoundaryPoints().AddTileIntersectionPoints();
-            var boundaryPoints2D = boundaryPoints.ProjectToXZPlane();
-
-            var hitTerrains = boundaryPoints.GetHitTerrainsAndBoundaryPoints();
-
-            for (int tc = 0; tc < hitTerrains.Count; tc++)
-            {
-                var keyPair = hitTerrains.ElementAt(tc);
-                var terrain = keyPair.Key;
-                var boundaryCurve = keyPair.Value.GetCurve(curveSampleRate, true);
-
-                var position = terrain.GetPosition();
-                var size = terrain.terrainData.size;
-                var hmResolution = terrain.terrainData.heightmapResolution;
-                var heights = terrain.terrainData.GetHeights(0, 0, hmResolution, hmResolution);
-
-                for (int i = 0; i < hmResolution; i++)
-                {
-                    for (int j = 0; j < hmResolution; j++)
-                    {
-                        float posX = size.x * i / (hmResolution - 1) + position.x;
-                        float posZ = size.z * j / (hmResolution - 1) + position.z;
-
-                        var pointPosition2D = new Vector2(posX, posZ);
-
-                        if (pointPosition2D.IsInside(boundaryPoints2D)) continue;
-
-                        var positionOnXZPlane = new Vector3(posX, 0, posZ);
-                        var positionOnCurve = boundaryCurve.EvaluatePosition(boundaryCurve.Project(positionOnXZPlane).percent);
-                        var distanceFromCurve = Vector3.Distance(positionOnXZPlane, positionOnCurve);
-
-                        if (distanceFromCurve > smoothDistance)
-                        {
-                            heights[j, i] = 0;
-                            continue;
-                        }
-
-                        var smoothAmountMeter = distanceFromCurve * smoothFactor;
-                        smoothAmountMeter *= smoothAmountMeter;
-                        var smoothAmountPercent = (positionOnCurve.GetHitTerrainHeight() - smoothAmountMeter) / size.y;
-
-                        heights[j, i] = smoothAmountPercent;
-                    }
-                }
-
-                terrain.terrainData.SetHeights(0, 0, heights);
-
-                GameObject.DestroyImmediate(boundaryCurve.gameObject);
-
-                Debug.Log(terrain.name + ": " + DateTime.Now.Subtract(startTime).TotalMinutes);
-            }
+            var window = GetWindow<CityLimitsEditor>();
+            window.position = GUIHelper.GetEditorWindowRect().AlignCenter(700, 700);
         }
 
-        [MenuItem("Cuku/City/Limits/Add Void")]
-        static void AddVoid()
-        {
-            var voidPlane = GameObject.CreatePrimitive(PrimitiveType.Quad).transform;
-            voidPlane.name = "Void";
-            voidPlane.position = Vector3.up * 24;
-            voidPlane.eulerAngles = Vector3.right * 90;
-            voidPlane.localScale = new Vector3(100000, 100000, 1);
-            voidPlane.GetComponent<MeshRenderer>().material = Resources.Load<Material>("CityLimits/VoidMaterial");
-            GameObject.DestroyImmediate(voidPlane.GetComponent<Collider>());
-        }
+        [PropertySpace, InlineEditor]
+        public CityLimitsConfig Config;
 
-        [MenuItem("Cuku/City/Limits/Create Boundary")]
-        static void CreateBoundary()
-        {
-            var boundaryPoints = Features.GetBoundaryPoints().AddTileIntersectionPoints();
+        #region Actions
+        [ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
+		public void CreateBoundary()
+		{
+			var boundaryPoints = AddTileIntersectionPoints(Features.GetBoundaryPoints());
 
-            boundaryPoints.CreateWall("Boundary");
-        }
+			CreateWall(boundaryPoints, "Boundary");
+		}
 
-        static Dictionary<Terrain, Vector3[]> GetHitTerrainsAndBoundaryPoints(this Vector3[] boundaryPoints)
+        [ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
+        public void SmoothOuterTerrain()
+		{
+			var startTime = DateTime.Now;
+
+			var boundaryPoints = AddTileIntersectionPoints(Features.GetBoundaryPoints());
+			var boundaryPoints2D = boundaryPoints.ProjectToXZPlane();
+
+			var hitTerrains = GetHitTerrainsAndBoundaryPoints(boundaryPoints);
+
+			for (int tc = 0; tc < hitTerrains.Count; tc++)
+			{
+				var keyPair = hitTerrains.ElementAt(tc);
+				var terrain = keyPair.Key;
+				var boundaryCurve = keyPair.Value.CreateCurve(Config.CurveSampleRate, true);
+
+				var position = terrain.GetPosition();
+				var size = terrain.terrainData.size;
+				var hmResolution = terrain.terrainData.heightmapResolution;
+				var heights = terrain.terrainData.GetHeights(0, 0, hmResolution, hmResolution);
+
+				for (int i = 0; i < hmResolution; i++)
+				{
+					for (int j = 0; j < hmResolution; j++)
+					{
+						float posX = size.x * i / (hmResolution - 1) + position.x;
+						float posZ = size.z * j / (hmResolution - 1) + position.z;
+
+						var pointPosition2D = new Vector2(posX, posZ);
+
+						if (pointPosition2D.IsInside(boundaryPoints2D)) continue;
+
+						var positionOnXZPlane = new Vector3(posX, 0, posZ);
+						var positionOnCurve = boundaryCurve.EvaluatePosition(boundaryCurve.Project(positionOnXZPlane).percent);
+						var distanceFromCurve = Vector3.Distance(positionOnXZPlane, positionOnCurve);
+
+						if (distanceFromCurve > Config.SmoothDistance)
+						{
+							heights[j, i] = 0;
+							continue;
+						}
+
+						var smoothAmountMeter = distanceFromCurve * Config.SmoothFactor;
+						smoothAmountMeter *= smoothAmountMeter;
+						var smoothAmountPercent = (positionOnCurve.GetHitTerrainHeight() - smoothAmountMeter) / size.y;
+
+						heights[j, i] = smoothAmountPercent;
+					}
+				}
+
+				terrain.terrainData.SetHeights(0, 0, heights);
+
+				GameObject.DestroyImmediate(boundaryCurve.gameObject);
+
+				Debug.Log(terrain.name + ": " + DateTime.Now.Subtract(startTime).TotalMinutes);
+			}
+		}
+
+        [ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
+        public void AddVoid()
+		{
+			var voidPlane = GameObject.CreatePrimitive(PrimitiveType.Quad).transform;
+			GameObject.DestroyImmediate(voidPlane.GetComponent<Collider>());
+
+			voidPlane.name = "Void";
+			voidPlane.position = Vector3.up * 24;
+			voidPlane.eulerAngles = Vector3.right * 90;
+			voidPlane.localScale = new Vector3(100000, 100000, 1);
+
+            var meshRenderer = voidPlane.GetComponent<MeshRenderer>();
+            meshRenderer.material = Config.VoidMaterial;
+            meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+		}
+
+        private bool IsConfigValid()
+		{
+            return Config != null;
+		}
+        #endregion
+
+        private Dictionary<Terrain, Vector3[]> GetHitTerrainsAndBoundaryPoints(Vector3[] boundaryPoints)
         {
             Dictionary<Terrain, int[]> terrainLimitsIds = new Dictionary<Terrain, int[]>();
             for (int i = 0; i < boundaryPoints.Length - 1; i++)
@@ -122,11 +140,11 @@
             foreach (var terrain in terrainLimitsIds)
             {
                 var limits = terrain.Value;
-                var startId = limits[0] - curveOffset;
-                var endId = limits[1] + curveOffset;
+                var startId = limits[0] - Config.CurveOffset;
+                var endId = limits[1] + Config.CurveOffset;
 
                 var points = new List<Vector3>();
-                if (limits[0] == 0) points.AddRange(boundaryPoints.Skip(boundaryPoints.Count() - curveOffset));
+                if (limits[0] == 0) points.AddRange(boundaryPoints.Skip(boundaryPoints.Count() - Config.CurveOffset));
                 points.AddRange(boundaryPoints.Skip(startId).Take(endId - startId));
 
                 terrains.Add(terrain.Key, points.ToArray());
@@ -135,7 +153,7 @@
             return terrains;
         }
 
-        private static void CreateWall(this Vector3[] boundaryPoints, string name)
+        private void CreateWall(Vector3[] boundaryPoints, string name)
         {
             // Create vertices
             var wallVertices = new List<Vector3>();
@@ -147,11 +165,9 @@
 
                 wallVertices.Add(point0);
                 wallVertices.Add(point1);
-                wallVertices.Add(new Vector3(point0.x, point0.y + boundaryHeight, point0.z));
-                wallVertices.Add(new Vector3(point1.x, point1.y + boundaryHeight, point1.z));
+                wallVertices.Add(new Vector3(point0.x, point0.y + Config.BoundaryHeight, point0.z));
+                wallVertices.Add(new Vector3(point1.x, point1.y + Config.BoundaryHeight, point1.z));
             }
-
-            var sharedVertices = new List<SharedVertex>();
 
             // Create faces
             var faces = new List<Face>();
@@ -177,7 +193,7 @@
         }
 
         #region Points
-        static Vector3[] AddTileIntersectionPoints(this Vector3[] points)
+        private Vector3[] AddTileIntersectionPoints(Vector3[] points)
         {
             var allPoints = new List<Vector3>();
             var intersectionPointIds = new List<int>();
@@ -220,7 +236,7 @@
             return shiftedPoints;
         }
 
-        static Vector3 GetTileIntersectionPoint(Vector3 point1, Vector3 point2)
+        private Vector3 GetTileIntersectionPoint(Vector3 point1, Vector3 point2)
         {
             var terrainAnglePoints = point1.GetHitTerrain().GetTerrainAnglePoints();
 
