@@ -1,10 +1,8 @@
-﻿namespace Cuku.Utilities
+﻿namespace Cuku.City
 {
 	using Sirenix.OdinInspector;
-	using System;
 	using UnityEngine;
 
-	[Serializable]
     public class CityLimitsConfig : SerializedScriptableObject
     {
 		[PropertySpace, Title("Boundary")]
