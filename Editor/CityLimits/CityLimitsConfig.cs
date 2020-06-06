@@ -23,7 +23,7 @@
 		[InfoBox("Higher - steepest.", InfoMessageType.None)]
 		public float SmoothFactor = 0.3f;
 
-		[PropertySpace(20), Title("Void"), AssetsOnly]
+		[PropertySpace(20), Title("Void"), AssetsOnly, Required]
 		public Material VoidMaterial;
 	}
 }
