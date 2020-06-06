@@ -25,7 +25,7 @@
 			window.position = GUIHelper.GetEditorWindowRect().AlignCenter(700, 700);
 		}
 
-		[PropertySpace, InlineEditor]
+		[PropertySpace, InlineEditor, Required]
 		public CityLimitsConfig Config;
 
         private bool IsConfigValid()
@@ -38,9 +38,26 @@
         [ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
 		public void CreateBoundary()
 		{
-			var boundaryPoints = AddTileIntersectionPoints(Features.GetBoundaryPoints());
+			var boundaryPoints = AddTileIntersectionPoints(Config.BoundaryGeoData.GetPathInStreamingAssets().GetBoundaryPoints());
 
 			CreateWall(boundaryPoints, "Boundary");
+		}
+
+        [ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
+        public void AddVoid()
+		{
+			var voidPlane = GameObject.CreatePrimitive(PrimitiveType.Quad).transform;
+			GameObject.DestroyImmediate(voidPlane.GetComponent<Collider>());
+
+			voidPlane.name = "Void";
+			voidPlane.position = Vector3.up * 24;
+			voidPlane.eulerAngles = Vector3.right * 90;
+			voidPlane.localScale = new Vector3(100000, 100000, 1);
+
+            var meshRenderer = voidPlane.GetComponent<MeshRenderer>();
+            meshRenderer.material = Config.VoidMaterial;
+            meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
 		}
 
         [ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
@@ -48,7 +65,7 @@
 		{
 			var startTime = DateTime.Now;
 
-			var boundaryPoints = AddTileIntersectionPoints(Features.GetBoundaryPoints());
+			var boundaryPoints = AddTileIntersectionPoints(Config.BoundaryGeoData.GetPathInStreamingAssets().GetBoundaryPoints());
 			var boundaryPoints2D = boundaryPoints.ProjectToXZPlane();
 
 			var hitTerrains = GetHitTerrainsAndBoundaryPoints(boundaryPoints);
@@ -99,23 +116,6 @@
 
 				Debug.Log(terrain.name + ": " + DateTime.Now.Subtract(startTime).TotalMinutes);
 			}
-		}
-
-        [ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
-        public void AddVoid()
-		{
-			var voidPlane = GameObject.CreatePrimitive(PrimitiveType.Quad).transform;
-			GameObject.DestroyImmediate(voidPlane.GetComponent<Collider>());
-
-			voidPlane.name = "Void";
-			voidPlane.position = Vector3.up * 24;
-			voidPlane.eulerAngles = Vector3.right * 90;
-			voidPlane.localScale = new Vector3(100000, 100000, 1);
-
-            var meshRenderer = voidPlane.GetComponent<MeshRenderer>();
-            meshRenderer.material = Config.VoidMaterial;
-            meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
 		}
         #endregion
 
@@ -188,7 +188,10 @@
             wall.Refresh();
             EditorMeshUtility.Optimize(wall);
 
-            wall.SetMaterial(faces, Resources.Load<Material>("2Sided"));
+            var meshRenderer = wall.GetComponent<MeshRenderer>();
+            meshRenderer.material = Config.BoundaryMaterial;
+            meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
 
             wall.gameObject.name = wall.name = name;
             wall.transform.SetParent(null, true);
