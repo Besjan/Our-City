@@ -17,15 +17,22 @@
 
 	public class CityLimitsEditor : OdinEditorWindow
     {
-        [MenuItem("Cuku/Our City/City Limits")]
-        private static void OpenWindow()
-        {
-            var window = GetWindow<CityLimitsEditor>();
-            window.position = GUIHelper.GetEditorWindowRect().AlignCenter(700, 700);
-        }
+		#region Editor
+		[MenuItem("Cuku/Our City/City Limits Editor")]
+		private static void OpenWindow()
+		{
+			var window = GetWindow<CityLimitsEditor>();
+			window.position = GUIHelper.GetEditorWindowRect().AlignCenter(700, 700);
+		}
 
-        [PropertySpace, InlineEditor]
-        public CityLimitsConfig Config;
+		[PropertySpace, InlineEditor]
+		public CityLimitsConfig Config;
+
+        private bool IsConfigValid()
+        {
+            return Config != null;
+        }
+        #endregion
 
         #region Actions
         [ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
@@ -109,11 +116,6 @@
             meshRenderer.material = Config.VoidMaterial;
             meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
-		}
-
-        private bool IsConfigValid()
-		{
-            return Config != null;
 		}
         #endregion
 
