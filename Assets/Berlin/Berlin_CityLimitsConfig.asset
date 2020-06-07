@@ -21,7 +21,8 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  BoundaryGeoData: City/Berlin/Features/Boundary.geo
+  CityName: {fileID: 11400000, guid: ab3e9c57a45f9d742915a37e1d29c39c, type: 2}
+  BoundaryGeoData: City/Berlin/Features/Berlin_Boundary.geo
   BoundaryMaterial: {fileID: 2100000, guid: 45403f1d325664e9d827f1da90570a9b, type: 2}
   BoundaryHeight: 100
   VoidMaterial: {fileID: 2100000, guid: 6476f97c12054664a991da22584e68cc, type: 2}

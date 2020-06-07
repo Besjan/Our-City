@@ -14,6 +14,7 @@
 	using Sirenix.Utilities;
 	using UnityEngine.UI;
 	using Sirenix.OdinInspector;
+	using System.IO;
 
 	public class CityLimitsEditor : OdinEditorWindow
     {
@@ -76,7 +77,7 @@
             meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
 
-            wall.gameObject.name = wall.name = "Boundary";
+			wall.gameObject.name = wall.name = Path.GetFileNameWithoutExtension(Config.BoundaryGeoData).Replace('_', ' ');
             wall.transform.SetParent(null, true);
         }
 
@@ -86,7 +87,7 @@
 			var voidPlane = GameObject.CreatePrimitive(PrimitiveType.Quad).transform;
 			GameObject.DestroyImmediate(voidPlane.GetComponent<Collider>());
 
-			voidPlane.name = "Void";
+			voidPlane.name = Config.CityName.Value + " Void";
 			voidPlane.position = Vector3.up * 24;
 			voidPlane.eulerAngles = Vector3.right * 90;
 			voidPlane.localScale = new Vector3(100000, 100000, 1);

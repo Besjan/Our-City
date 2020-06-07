@@ -1,10 +1,14 @@
 ﻿namespace Cuku.City
 {
+	using Cuku.ScriptableObject;
 	using Sirenix.OdinInspector;
 	using UnityEngine;
 
     public class CityLimitsConfig : SerializedScriptableObject
     {
+		[PropertySpace(20), Title("City"), Required, InlineEditor]
+		public StringSO CityName;
+
 		[PropertySpace, Title("Boundary"), FilePath(ParentFolder = "Assets/StreamingAssets", RequireExistingPath = true)]
 		public string BoundaryGeoData;
 
