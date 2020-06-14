@@ -9,7 +9,7 @@
 		[PropertySpace(20), Title("City"), Required, InlineEditor]
 		public StringSO CityName;
 
-		[PropertySpace, Title("Boundary"), FilePath(ParentFolder = "Assets/StreamingAssets", RequireExistingPath = true)]
+		[PropertySpace, Title("Boundary"), FilePath(AbsolutePath = true, RequireExistingPath = true)]
 		public string BoundaryGeoData;
 
 		[PropertySpace, AssetsOnly, Required]
