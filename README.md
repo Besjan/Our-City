@@ -21,3 +21,8 @@
 
 ## Notes
 - If there are conflicts with "System.Runtime.CompilerServices.Unsafe.dll" from Unity Collections package, copy the later from ".../Library/PackageCache" to "Packages" and delete "System.Runtime.CompilerServices.Unsafe.dll".
+
+----
+
+## Powered by
+[![](https://www.jetbrains.com/apple-touch-icon.png)](https://www.jetbrains.com/?from=Our-City)
