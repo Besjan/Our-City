@@ -1,9 +1,7 @@
 ﻿namespace Cuku.OurCity
 {
-    using Unity.Collections;
     using Unity.Entities;
     using UnityEngine;
-    using Bounds = Bounds;
 
     public class AddTerrainBoundsSystem : SystemBase
     {

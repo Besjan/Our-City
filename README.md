@@ -9,6 +9,7 @@
 ----
 
 ## Dependencies
+- [DOTS Packages](https://unity.com/dots/packages)
 - [Utilities](https://github.com/Besjan/Utilities)
 - [MessagePack](https://github.com/neuecc/MessagePack-CSharp)
 - [Geo](https://gist.github.com/Besjan/64b8ddbfd74d9ed7fc438c502bd7d257)
@@ -20,6 +21,7 @@
 ----
 
 ## Notes
+- Fastest way to install DOTS Packages is to install [Hybrid Renderer Package](https://docs.unity3d.com/Manual/com.unity.rendering.hybrid.html)
 - If there are conflicts with "System.Runtime.CompilerServices.Unsafe.dll" from Unity Collections package, copy the later from ".../Library/PackageCache" to "Packages" and delete "System.Runtime.CompilerServices.Unsafe.dll".
 
 ----
