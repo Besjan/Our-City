@@ -4,22 +4,21 @@
     using Unity.Entities;
     using UnityEngine;
     using Bounds = Bounds;
-    
+
     public class AddTerrainBoundsSystem : SystemBase
     {
-        EndSimulationEntityCommandBufferSystem m_EndSimulationEcbSystem;
+        private EndSimulationEntityCommandBufferSystem _endSimulationEcbSystem;
+
         protected override void OnCreate()
         {
-            base.OnCreate();
-            // Find the ECB system once and store it for later usage
-            m_EndSimulationEcbSystem = World
+            _endSimulationEcbSystem = World
                 .GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
         }
-        
+
         protected override void OnUpdate()
         {
-            var ecb = m_EndSimulationEcbSystem.CreateCommandBuffer();
-            
+            var ecb = _endSimulationEcbSystem.CreateCommandBuffer();
+
             Entities
                 .WithoutBurst()
                 .WithNone<OurCity.Bounds>()
@@ -31,15 +30,15 @@
                     {
                         Value = new UnityEngine.Bounds
                         {
-                            center = terrain.GetPosition() + shift, 
+                            center = terrain.GetPosition() + shift,
                             extents = terrain.terrainData.size
                         }
                     };
-                    
+
                     ecb.AddComponent(entity, bounds);
                 }).Run();
-            
-            m_EndSimulationEcbSystem.AddJobHandleForProducer(this.Dependency);
+
+            _endSimulationEcbSystem.AddJobHandleForProducer(this.Dependency);
         }
     }
 }

@@ -8,5 +8,4 @@
     {
         public UnityEngine.Bounds Value;
     }
-
 }
