@@ -1,37 +1,41 @@
-﻿using Unity.Collections;
-using Unity.Entities;
-using UnityEngine;
-
-[UpdateBefore(typeof(CalculateFrustumPlanesSystem))]
-public class AddFrustumPlanesSystem : SystemBase
+﻿namespace Cuku.OurCity
 {
-    EntityQuery entityQuery;
+    using Unity.Collections;
+    using Unity.Entities;
+    using UnityEngine;
 
-    private bool Initialized;
-
-    protected override void OnCreate()
+    [UpdateBefore(typeof(CalculateFrustumPlanesSystem))]
+    public class AddFrustumPlanesSystem : SystemBase
     {
-        entityQuery = GetEntityQuery(new EntityQueryDesc()
-        {
-            All = new ComponentType[] {ComponentType.ReadOnly<Camera>()}
-        });
-    }
+        EntityQuery entityQuery;
 
-    protected override void OnUpdate()
-    {
-        if (Initialized) return;
-        
-        var entities = entityQuery.ToEntityArray(Allocator.Temp);
-        for (int e = 0; e < entities.Length; e++)
+        private bool Initialized;
+
+        protected override void OnCreate()
         {
-            var buffer = EntityManager.AddBuffer<FrustumPlanes>(entities[e]);
-        
-            for (int b = 0; b < 6; b++)
+            entityQuery = GetEntityQuery(new EntityQueryDesc()
             {
-                buffer.Add(new Plane());
-            }
+                All = new ComponentType[] {ComponentType.ReadOnly<Camera>()}
+            });
         }
 
-        Initialized = true;
+        protected override void OnUpdate()
+        {
+            if (Initialized) return;
+
+            var entities = entityQuery.ToEntityArray(Allocator.Temp);
+            for (int e = 0; e < entities.Length; e++)
+            {
+                var buffer = EntityManager.AddBuffer<FrustumPlanes>(entities[e]);
+
+                for (int b = 0; b < 6; b++)
+                {
+                    buffer.Add(new Plane());
+                }
+            }
+
+            Initialized = true;
+        }
     }
+
 }
