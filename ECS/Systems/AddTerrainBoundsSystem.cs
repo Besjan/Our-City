@@ -5,17 +5,17 @@
 
     public class AddTerrainBoundsSystem : SystemBase
     {
-        private EndSimulationEntityCommandBufferSystem _endSimulationEcbSystem;
+        private EndInitializationEntityCommandBufferSystem _endInitializationEcbSystem;
 
         protected override void OnCreate()
         {
-            _endSimulationEcbSystem = World
-                .GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+            _endInitializationEcbSystem = World
+                .GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
         }
 
         protected override void OnUpdate()
         {
-            var ecb = _endSimulationEcbSystem.CreateCommandBuffer();
+            var ecb = _endInitializationEcbSystem.CreateCommandBuffer();
 
             Entities
                 .WithoutBurst()
@@ -36,7 +36,7 @@
                     ecb.AddComponent(entity, bounds);
                 }).Run();
 
-            _endSimulationEcbSystem.AddJobHandleForProducer(this.Dependency);
+            _endInitializationEcbSystem.AddJobHandleForProducer(this.Dependency);
         }
     }
 }

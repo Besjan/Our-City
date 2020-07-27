@@ -29,9 +29,8 @@
 
                     for (int e = 0; e < cameras.Length; e++)
                     {
-                        var planes =
-                            GeometryUtility.CalculateFrustumPlanes(
-                                EntityManager.GetComponentObject<Camera>(cameras[e]));
+                        var planes = GeometryUtility.CalculateFrustumPlanes(
+                            EntityManager.GetComponentObject<Camera>(cameras[e]));
 
                         isInFrustum = GeometryUtility.TestPlanesAABB(planes.ToArray(), bounds.Value);
 
