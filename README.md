@@ -5,7 +5,8 @@
     - Create city boundary mesh.
     - Create void effect beyond city boundary.
     - Smooth terrain beyond city boundary.
-
+- Optimizations:
+    - Terrain Frustum Culling
 ----
 
 ## Dependencies
