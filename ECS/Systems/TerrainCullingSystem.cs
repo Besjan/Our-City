@@ -5,7 +5,7 @@
     using UnityEngine;
     using System.Linq;
 
-    public class TerrainFrustumCullingSystem : SystemBase
+    public class TerrainCullingSystem : SystemBase
     {
         private EntityQuery _cameraQuery;
 

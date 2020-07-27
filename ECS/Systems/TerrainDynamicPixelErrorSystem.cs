@@ -1,15 +1,14 @@
-﻿using Unity.Mathematics;
-
-namespace Cuku.OurCity
+﻿namespace Cuku.OurCity
 {
+    using Unity.Mathematics;
+    using System;
     using Unity.Collections;
     using Unity.Entities;
     using UnityEngine;
-    using System.Linq;
 
-    public class TerrainPixelErrorSystem : SystemBase
+    public class TerrainDynamicPixelErrorSystem : SystemBase
     {
-        private float distanceFromTerrain = 3000;
+        private float pixelErrorFactor = 4000;
 
         private EntityQuery _cameraQuery;
 
@@ -33,20 +32,16 @@ namespace Cuku.OurCity
                 .WithoutBurst()
                 .ForEach((Terrain terrain, in Bounds bounds) =>
                 {
-                    float pixelError = 200;
+                    var closestCameraDistance = Single.MaxValue;
 
                     for (int e = 0; e < cameras.Length; e++)
                     {
                         var cameraPosition = EntityManager.GetComponentObject<Transform>(cameras[e]).position;
-
-                        if (math.distance(cameraPosition, bounds.Value.center) < distanceFromTerrain)
-                        {
-                            pixelError = 1;
-                            continue;
-                        }
+                        closestCameraDistance = math.min(closestCameraDistance,
+                            math.distance(cameraPosition, bounds.Value.center));
                     }
 
-                    terrain.heightmapPixelError = pixelError;
+                    terrain.heightmapPixelError = closestCameraDistance / pixelErrorFactor;
                 }).Run();
         }
     }
