@@ -19,12 +19,12 @@
 
             Entities
                 .WithoutBurst()
-                .WithNone<OurCity.Bounds>()
+                .WithNone<Bounds>()
                 .ForEach((Entity entity, in Terrain terrain) =>
                 {
                     var shift = terrain.terrainData.size / 2;
 
-                    var bounds = new OurCity.Bounds
+                    var bounds = new Bounds
                     {
                         Value = new UnityEngine.Bounds
                         {
