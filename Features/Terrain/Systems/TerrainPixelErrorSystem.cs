@@ -1,12 +1,10 @@
 ﻿namespace Cuku.OurCity
 {
     using Unity.Mathematics;
-    using System;
-    using Unity.Collections;
     using Unity.Entities;
     using UnityEngine;
 
-    public class TerrainDynamicPixelErrorSystem : SystemBase
+    public class TerrainPixelErrorSystem : SystemBase
     {
         private float pixelErrorFactor = 4000;
 
