@@ -3,12 +3,14 @@
 ## Features
 - DOTS
     - ECS
-- Terrain
-    - Terrain Frustum Culling
-    - Terrain Dynamic Pixel Error
-- City limits:
-    - Create city boundary mesh
-    - Create void effect beyond city boundary
+- Camera Modes
+    - Top-Down
+- Terrain Optimizations
+    - Camera Frustum Culling
+    - Adapt Pixel Error to Camera Distance
+- City Limits:
+    - Boundary mesh
+    - Void effect beyond city boundary
     - Smooth terrain beyond city boundary
 ----
 
