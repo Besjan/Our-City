@@ -1,12 +1,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-greed.svg)](LICENSE)
 
 ## Features
-- City limits:
-    - Create city boundary mesh.
-    - Create void effect beyond city boundary.
-    - Smooth terrain beyond city boundary.
-- Optimizations:
+- DOTS
+    - ECS
+- Terrain
     - Terrain Frustum Culling
+    - Terrain Dynamic Pixel Error
+- City limits:
+    - Create city boundary mesh
+    - Create void effect beyond city boundary
+    - Smooth terrain beyond city boundary
 ----
 
 ## Dependencies
