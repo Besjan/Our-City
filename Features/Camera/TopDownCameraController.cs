@@ -1,4 +1,6 @@
-﻿namespace Cuku.OurCity
+﻿using Unity.Mathematics;
+
+namespace Cuku.OurCity
 {
     using UnityEngine.InputSystem;
     using UnityEngine;
@@ -6,9 +8,11 @@
     public class TopDownCameraController : MonoBehaviour
     {
         public InputAction MoveAction;
+        public InputAction ZoomAction;
 
         public float MoveSpeed = 1.0f;
-        public float MoveLerpSpeed = 0.5f;
+        public float ZoomSpeed = 1.0f;
+        public float LerpSpeed = 0.5f;
 
         private Transform target;
 
@@ -20,22 +24,29 @@
         private void OnEnable()
         {
             MoveAction.Enable();
+            ZoomAction.Enable();
         }
 
         private void OnDisable()
         {
             MoveAction.Disable();
+            ZoomAction.Disable();
         }
 
         private void Update()
         {
-            var moveValue = MoveAction.ReadValue<Vector2>() * (MoveSpeed * Time.deltaTime);
+            var moveValue = MoveAction.ReadValue<Vector2>() * MoveSpeed;
             var targetPosition = target.position;
+
+            var zoomValue = ZoomAction.ReadValue<float>() * ZoomSpeed;
 
             targetPosition.x += moveValue.x;
             targetPosition.z += moveValue.y;
 
-            target.position = Vector3.Lerp(target.position, targetPosition, MoveLerpSpeed);
+            targetPosition.y += zoomValue;
+            targetPosition.y = math.max(targetPosition.y, 0);
+
+            target.position = Vector3.Lerp(target.position, targetPosition, LerpSpeed);
         }
     }
 }
