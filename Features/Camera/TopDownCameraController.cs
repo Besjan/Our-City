@@ -36,13 +36,11 @@ namespace Cuku.OurCity
         private void Update()
         {
             var moveValue = MoveAction.ReadValue<Vector2>() * MoveSpeed;
-            var targetPosition = target.position;
-
             var zoomValue = ZoomAction.ReadValue<float>() * ZoomSpeed;
 
+            var targetPosition = target.position;
             targetPosition.x += moveValue.x;
             targetPosition.z += moveValue.y;
-
             targetPosition.y += zoomValue;
             targetPosition.y = math.max(targetPosition.y, 0);
 
