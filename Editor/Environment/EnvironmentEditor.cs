@@ -17,6 +17,8 @@
 	using System.IO;
 	using AwesomeTechnologies.VegetationStudio;
 	using AwesomeTechnologies.VegetationSystem;
+	using AwesomeTechnologies.TerrainSystem;
+	using AwesomeTechnologies.TouchReact;
 
 	public class EnvironmentEditor : OdinEditorWindow
 	{
@@ -42,41 +44,38 @@
 		[ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
 		public void AddVegetationStudioPro()
 		{
-			AddVSPManager();
-			AddVSPUnityTerrain();
-		}
-		#endregion
-
-		private void AddVSPManager()
-		{
+			// Add VSP Manager
 			var vspManager = FindObjectOfType<VegetationStudioManager>();
 			if (FindObjectOfType<VegetationStudioManager>())
 			{
 				DestroyImmediate(vspManager.gameObject);
+
+				// Remove all VSP Unity Terrains
+				var oldVSPUnityTerrains = GameObject.FindObjectsOfType<UnityTerrain>();
+				for (int i = 0; i < oldVSPUnityTerrains.Length; i++)
+				{
+					DestroyImmediate(oldVSPUnityTerrains[i]);
+				}
 			};
 
-			// Add VSP Manager
-			GameObject go = new GameObject { name = Config.CityName.Value + " Vegetation Studio Manager" };
-			go.AddComponent<VegetationStudioManager>();
-		}
+			GameObject vspManagerGO = new GameObject { name = Config.CityName.Value + " VegetationStudioPro" };
+			vspManagerGO.AddComponent<VegetationStudioManager>();
 
-		private void AddVSPUnityTerrain()
-		{
-			var terrains = GameObject.FindObjectsOfType<Terrain>();
+			// Add VSP System
+			GameObject vspSystemGO = new GameObject { name = Config.CityName.Value + " VegetationSystemPro" };
+			vspSystemGO.transform.SetParent(vspManagerGO.transform);
+			VegetationSystemPro vspSystem = vspSystemGO.AddComponent<VegetationSystemPro>();
+			vspSystem.AddAllUnityTerrains();
 
-			terrains[0].transform.parent.gameObject.SetActive(false);
-
-			for (int i = 0; i < terrains.Length; i++)
+			// Setup VSP Unity Terrains
+			var vspTerrains = GameObject.FindObjectsOfType<UnityTerrain>();
+			for (int i = 0; i < vspTerrains.Count(); i++)
 			{
-				var vspTerrain = terrains[i].gameObject.GetComponent<UnityTerrain>();
-				if (vspTerrain == null) vspTerrain = terrains[i].gameObject.AddComponent<UnityTerrain>();
-
-				vspTerrain.AutoAddToVegegetationSystem = true;
-				vspTerrain.DisableTerrainTreesAndDetails = true;
+				vspTerrains[i].AutoAddToVegegetationSystem = true; 
+				vspTerrains[i].DisableTerrainTreesAndDetails = true;
 			}
-
-			terrains[0].transform.parent.gameObject.SetActive(true);
 		}
+		#endregion
 #endif
 	}
 }
