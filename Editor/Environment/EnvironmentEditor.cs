@@ -29,7 +29,7 @@
 		}
 
 		[PropertySpace, InlineEditor, Required]
-		public CityLimitsConfig Config;
+		public EnvironmentConfig Config;
 
 		private bool IsConfigValid()
 		{
@@ -49,10 +49,14 @@
 
 		private void AddVSPManager()
 		{
-			if (FindObjectOfType<VegetationStudioManager>()) return;
+			var vspManager = FindObjectOfType<VegetationStudioManager>();
+			if (FindObjectOfType<VegetationStudioManager>())
+			{
+				DestroyImmediate(vspManager.gameObject);
+			};
 
 			// Add VSP Manager
-			GameObject go = new GameObject { name = "VegetationStudioPro" };
+			GameObject go = new GameObject { name = Config.CityName.Value + " Vegetation Studio Manager" };
 			go.AddComponent<VegetationStudioManager>();
 		}
 
@@ -64,7 +68,9 @@
 
 			for (int i = 0; i < terrains.Length; i++)
 			{
-				var vspTerrain = terrains[i].gameObject.AddComponent<UnityTerrain>();
+				var vspTerrain = terrains[i].gameObject.GetComponent<UnityTerrain>();
+				if (vspTerrain == null) vspTerrain = terrains[i].gameObject.AddComponent<UnityTerrain>();
+
 				vspTerrain.AutoAddToVegegetationSystem = true;
 				vspTerrain.DisableTerrainTreesAndDetails = true;
 			}
