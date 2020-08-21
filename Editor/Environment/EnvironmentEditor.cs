@@ -16,6 +16,7 @@
 	using Sirenix.OdinInspector;
 	using System.IO;
 	using AwesomeTechnologies.VegetationStudio;
+	using AwesomeTechnologies.VegetationSystem;
 
 	public class EnvironmentEditor : OdinEditorWindow
 	{
@@ -36,20 +37,40 @@
 		}
 		#endregion
 
+#if VEGETATION_STUDIO_PRO
 		#region Actions
 		[ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
 		public void AddVegetationStudioPro()
 		{
-			if (GetVegetationStudioManager()) return;
-
-			GameObject go = new GameObject { name = "VegetationStudioPro" };
-			go.AddComponent<VegetationStudioManager>();
+			AddVSPManager();
+			AddVSPUnityTerrain();
 		}
 		#endregion
 
-		VegetationStudioManager GetVegetationStudioManager()
+		private void AddVSPManager()
 		{
-			return FindObjectOfType<VegetationStudioManager>();
+			if (FindObjectOfType<VegetationStudioManager>()) return;
+
+			// Add VSP Manager
+			GameObject go = new GameObject { name = "VegetationStudioPro" };
+			go.AddComponent<VegetationStudioManager>();
 		}
+
+		private void AddVSPUnityTerrain()
+		{
+			var terrains = GameObject.FindObjectsOfType<Terrain>();
+
+			terrains[0].transform.parent.gameObject.SetActive(false);
+
+			for (int i = 0; i < terrains.Length; i++)
+			{
+				var vspTerrain = terrains[i].gameObject.AddComponent<UnityTerrain>();
+				vspTerrain.AutoAddToVegegetationSystem = true;
+				vspTerrain.DisableTerrainTreesAndDetails = true;
+			}
+
+			terrains[0].transform.parent.gameObject.SetActive(true);
+		}
+#endif
 	}
 }
