@@ -66,6 +66,7 @@
 			vspSystemGO.transform.SetParent(vspManagerGO.transform);
 			VegetationSystemPro vspSystem = vspSystemGO.AddComponent<VegetationSystemPro>();
 			vspSystem.AddAllUnityTerrains();
+			vspSystem.SeaLevel = Config.TerrainHeightRange.Value.x;
 			vspSystem.AutomaticBoundsCalculation = false;
 
 			// Setup VSP Unity Terrains
