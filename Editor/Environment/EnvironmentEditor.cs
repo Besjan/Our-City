@@ -66,6 +66,7 @@
 			vspSystemGO.transform.SetParent(vspManagerGO.transform);
 			VegetationSystemPro vspSystem = vspSystemGO.AddComponent<VegetationSystemPro>();
 			vspSystem.AddAllUnityTerrains();
+			vspSystem.AutomaticBoundsCalculation = false;
 
 			// Setup VSP Unity Terrains
 			var vspTerrains = GameObject.FindObjectsOfType<UnityTerrain>();
