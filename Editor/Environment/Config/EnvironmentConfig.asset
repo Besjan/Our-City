@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fc477233fd0506438b12958e51f393f, type: 3}
-  m_Name: Berlin_CityLimitsConfig
+  m_Script: {fileID: 11500000, guid: 8421916d4f9e7834885d0efad152b17f, type: 3}
+  m_Name: EnvironmentConfig
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -22,11 +22,5 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   CityName: {fileID: 11400000, guid: ab3e9c57a45f9d742915a37e1d29c39c, type: 2}
-  BoundaryGeoData: C:/Projects/City/Berlin/Features/Berlin_Boundary.geo
-  BoundaryMaterial: {fileID: 2100000, guid: 45403f1d325664e9d827f1da90570a9b, type: 2}
-  BoundaryHeight: 100
-  VoidMaterial: {fileID: 2100000, guid: 6476f97c12054664a991da22584e68cc, type: 2}
-  CurveOffset: 20
-  CurveSampleRate: 15
-  SmoothDistance: 20
-  SmoothFactor: 0.3
+  TerrainHeightRange: {fileID: 11400000, guid: f57df45b013bf0743bbcde600b1944ce, type: 2}
+  VegetationSystemProPrefab: {fileID: 3815310573205843039, guid: 22636d199ee75bf4eaa7f81200be962b, type: 3}
