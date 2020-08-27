@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 045f8b4194c4a4b40842e147db51ad14, type: 3}
   m_Name: Berlin_TerrainHeightRange
   m_EditorClassIdentifier: 
-  Value: {x: 0, y: 123}
+  Value: {x: 24, y: 123}

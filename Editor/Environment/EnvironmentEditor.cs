@@ -1,24 +1,15 @@
 ﻿namespace Cuku.City
 {
-	using System.Collections.Generic;
 	using UnityEngine;
 	using UnityEditor;
-	using System;
 	using System.Linq;
-	using Geo;
-	using Utilities;
-	using UnityEngine.ProBuilder;
-	using UnityEditor.ProBuilder;
 	using Sirenix.OdinInspector.Editor;
 	using Sirenix.Utilities.Editor;
 	using Sirenix.Utilities;
 	using UnityEngine.UI;
 	using Sirenix.OdinInspector;
-	using System.IO;
 	using AwesomeTechnologies.VegetationStudio;
 	using AwesomeTechnologies.VegetationSystem;
-	using AwesomeTechnologies.TerrainSystem;
-	using AwesomeTechnologies.TouchReact;
 
 	public class EnvironmentEditor : OdinEditorWindow
 	{
@@ -62,18 +53,23 @@
 			vspManagerGO.AddComponent<VegetationStudioManager>();
 
 			// Add VSP System
-			GameObject vspSystemGO = new GameObject { name = Config.CityName.Value + " VegetationSystemPro" };
-			vspSystemGO.transform.SetParent(vspManagerGO.transform);
-			VegetationSystemPro vspSystem = vspSystemGO.AddComponent<VegetationSystemPro>();
-			vspSystem.AddAllUnityTerrains();
+			var vspSystemGO = GameObject.Instantiate(Config.VegetationSystemProPrefab, vspManagerGO.transform);
+			vspSystemGO.name = Config.CityName.Value + " VegetationSystemPro";
+			VegetationSystemPro vspSystem = vspSystemGO.GetComponent<VegetationSystemPro>();
+
 			vspSystem.SeaLevel = Config.TerrainHeightRange.Value.x;
+
+			//vspSystem.AddCamera(Camera.main);
+
+			vspSystem.AutomaticBoundsCalculation = true;
+			vspSystem.AddAllUnityTerrains();
 			vspSystem.AutomaticBoundsCalculation = false;
 
 			// Setup VSP Unity Terrains
 			var vspTerrains = GameObject.FindObjectsOfType<UnityTerrain>();
 			for (int i = 0; i < vspTerrains.Count(); i++)
 			{
-				vspTerrains[i].AutoAddToVegegetationSystem = true; 
+				vspTerrains[i].AutoAddToVegegetationSystem = true;
 				vspTerrains[i].DisableTerrainTreesAndDetails = true;
 			}
 		}

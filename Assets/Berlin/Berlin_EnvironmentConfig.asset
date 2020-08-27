@@ -23,3 +23,4 @@ MonoBehaviour:
     SerializationNodes: []
   CityName: {fileID: 11400000, guid: ab3e9c57a45f9d742915a37e1d29c39c, type: 2}
   TerrainHeightRange: {fileID: 11400000, guid: f57df45b013bf0743bbcde600b1944ce, type: 2}
+  VegetationSystemProPrefab: {fileID: 3815310573205843039, guid: 22636d199ee75bf4eaa7f81200be962b, type: 3}

@@ -1,9 +1,8 @@
-﻿using Unity.Mathematics;
-
-namespace Cuku.OurCity
+﻿namespace Cuku.OurCity
 {
     using UnityEngine.InputSystem;
     using UnityEngine;
+    using Unity.Mathematics;
 
     public class TopDownCameraController : MonoBehaviour
     {

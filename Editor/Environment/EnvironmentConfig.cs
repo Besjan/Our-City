@@ -11,5 +11,8 @@
 		[PropertySpace, InlineEditor, Required]
 		[InfoBox("Minimum and maximum terrain heights.", InfoMessageType.None)]
 		public Vector2SO TerrainHeightRange;
+
+		[PropertySpace(20), Title("Vegetation Studio Pro"), Required]
+		public UnityEngine.GameObject VegetationSystemProPrefab;
 	}
 }
