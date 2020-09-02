@@ -8,8 +8,10 @@
 	using Sirenix.Utilities;
 	using UnityEngine.UI;
 	using Sirenix.OdinInspector;
+#if VEGETATION_STUDIO_PRO
 	using AwesomeTechnologies.VegetationStudio;
 	using AwesomeTechnologies.VegetationSystem;
+#endif
 
 	public class EnvironmentEditor : OdinEditorWindow
 	{

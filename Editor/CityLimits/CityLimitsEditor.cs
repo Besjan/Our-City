@@ -1,12 +1,12 @@
 ﻿namespace Cuku.City
 {
-    using System.Collections.Generic;
-    using UnityEngine;
-    using UnityEditor;
-    using System;
-    using System.Linq;
+	using System.Collections.Generic;
+	using UnityEngine;
+	using UnityEditor;
+	using System;
+	using System.Linq;
 	using Geo;
-    using Utilities;
+	using Utilities;
 	using UnityEngine.ProBuilder;
 	using UnityEditor.ProBuilder;
 	using Sirenix.OdinInspector.Editor;
@@ -17,7 +17,7 @@
 	using System.IO;
 
 	public class CityLimitsEditor : OdinEditorWindow
-    {
+	{
 		#region Editor
 		[MenuItem("Cuku/Our City/City Limits Editor")]
 		private static void OpenWindow()
@@ -29,60 +29,60 @@
 		[PropertySpace, InlineEditor, Required]
 		public CityLimitsConfig Config;
 
-        private bool IsConfigValid()
-        {
-            return Config != null;
-        }
-        #endregion
+		private bool IsConfigValid()
+		{
+			return Config != null;
+		}
+		#endregion
 
-        #region Actions
-        [ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
+		#region Actions
+		[ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
 		public void CreateBoundary()
 		{
 			var boundaryPoints = Config.BoundaryGeoData.GetPathInStreamingAssets().GetBoundaryPoints().AddTileIntersectionPoints();
 
-            // Create vertices
-            var wallVertices = new List<Vector3>();
+			// Create vertices
+			var wallVertices = new List<Vector3>();
 
-            for (int p = 0; p < boundaryPoints.Length - 1; p++)
-            {
-                var point0 = boundaryPoints[p];
-                var point1 = boundaryPoints[p + 1];
+			for (int p = 0; p < boundaryPoints.Length - 1; p++)
+			{
+				var point0 = boundaryPoints[p];
+				var point1 = boundaryPoints[p + 1];
 
-                wallVertices.Add(point0);
-                wallVertices.Add(point1);
-                wallVertices.Add(new Vector3(point0.x, point0.y + Config.BoundaryHeight, point0.z));
-                wallVertices.Add(new Vector3(point1.x, point1.y + Config.BoundaryHeight, point1.z));
-            }
+				wallVertices.Add(point0);
+				wallVertices.Add(point1);
+				wallVertices.Add(new Vector3(point0.x, point0.y + Config.BoundaryHeight, point0.z));
+				wallVertices.Add(new Vector3(point1.x, point1.y + Config.BoundaryHeight, point1.z));
+			}
 
-            // Create faces
-            var faces = new List<Face>();
-            for (int f = 0; f < wallVertices.Count - 3; f += 4)
-            {
-                var faceVertices = new int[] { f, f + 1, f + 2, f + 1, f + 3, f + 2 };
-                faces.Add(new Face(faceVertices));
-            }
+			// Create faces
+			var faces = new List<Face>();
+			for (int f = 0; f < wallVertices.Count - 3; f += 4)
+			{
+				var faceVertices = new int[] { f, f + 1, f + 2, f + 1, f + 3, f + 2 };
+				faces.Add(new Face(faceVertices));
+			}
 
-            var wall = ProBuilderMesh.Create(wallVertices, faces);
+			var wall = ProBuilderMesh.Create(wallVertices, faces);
 
-            Normals.CalculateNormals(wall);
-            Normals.CalculateTangents(wall);
-            Smoothing.ApplySmoothingGroups(wall, faces, 30);
-            wall.ToMesh();
-            wall.Refresh();
-            EditorMeshUtility.Optimize(wall);
+			Normals.CalculateNormals(wall);
+			Normals.CalculateTangents(wall);
+			Smoothing.ApplySmoothingGroups(wall, faces, 30);
+			wall.ToMesh();
+			wall.Refresh();
+			EditorMeshUtility.Optimize(wall);
 
-            var meshRenderer = wall.GetComponent<MeshRenderer>();
-            meshRenderer.material = Config.BoundaryMaterial;
-            meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+			var meshRenderer = wall.GetComponent<MeshRenderer>();
+			meshRenderer.material = Config.BoundaryMaterial;
+			meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+			meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
 
 			wall.gameObject.name = wall.name = Path.GetFileNameWithoutExtension(Config.BoundaryGeoData).Replace('_', ' ');
-            wall.transform.SetParent(null, true);
-        }
+			wall.transform.SetParent(null, true);
+		}
 
-        [ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
-        public void AddVoid()
+		[ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
+		public void AddVoid()
 		{
 			var voidPlane = GameObject.CreatePrimitive(PrimitiveType.Quad).transform;
 			GameObject.DestroyImmediate(voidPlane.GetComponent<Collider>());
@@ -92,14 +92,15 @@
 			voidPlane.eulerAngles = Vector3.right * 90;
 			voidPlane.localScale = new Vector3(100000, 100000, 1);
 
-            var meshRenderer = voidPlane.GetComponent<MeshRenderer>();
-            meshRenderer.material = Config.VoidMaterial;
-            meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+			var meshRenderer = voidPlane.GetComponent<MeshRenderer>();
+			meshRenderer.material = Config.VoidMaterial;
+			meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+			meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
 		}
 
-        [ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
-        public void SmoothOuterTerrain()
+#if DREAMTECK_SPLINES
+		[ShowIf("IsConfigValid"), PropertySpace(20), Button(ButtonSizes.Large)]
+		public void SmoothOuterTerrain()
 		{
 			var startTime = DateTime.Now;
 
@@ -155,6 +156,7 @@
 				Debug.Log(terrain.name + ": " + DateTime.Now.Subtract(startTime).TotalMinutes);
 			}
 		}
-        #endregion
-    }
+#endif
+		#endregion
+	}
 }
